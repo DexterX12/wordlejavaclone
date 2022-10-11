@@ -35,13 +35,13 @@ public class WordAnalyzer {
         Map<Character, ArrayList<Integer>> lettersCoincidences = new HashMap<Character, ArrayList<Integer>>();
 
         // Coloca todas las coincidencias de cada letra en una colección
-
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
             ArrayList<Integer> coincidences = new ArrayList<Integer>();
 
             /* Si ya se hizo la comparación de una letra previa, esto impide que se compare la misma
             letra varias veces */
+
             if (!lettersCoincidences.containsKey(letter)) {
                 for (int j = 0; j < word.length(); j++) {
                     if (letter == word.charAt(j)){
@@ -70,10 +70,11 @@ public class WordAnalyzer {
         
         // Compara las posiciones 1-1 de ambas palabras, y coloca en verde las que coincidan
         // Las que no, se dejan en su color original.
-
         for (int j = 0; j < word.length(); j++) {
             if (userWordLetters[j] == word.charAt(j)) {
                 finalText[j] = WordAnalyzer.ANSI_GREEN + userWordLetters[j];
+
+                // Se remueve siempre el índice 0, ya que las coincidencias se encuentran de izquierda a derecha
                 lettersCoincidences.get(userWordLetters[j]).remove(0);
             } else {
                 finalText[j] = WordAnalyzer.ANSI_RESET + userWordLetters[j];
@@ -82,22 +83,26 @@ public class WordAnalyzer {
 
 
         for (int i = 0; i < userWordLetters.length; i++) {
-            char letter = userWordLetters[i];
-
-            // Comprueba si la letra existe en la palabra original, si no es cierto, se deja el color original.
-
-            if (!word.contains(Character.toString(letter))) {
+            char letter = userWordLetters[i];    
+            boolean doesLetterExist = word.contains(Character.toString(letter));
+            
+            // Comprueba si la letra no existe en la palabra original
+            if (!doesLetterExist) {
                 finalText[i] = WordAnalyzer.ANSI_RESET + letter;
             
-            /* Comprueba si existen coincidencias de una letra, y si la posición de esa coincidencia es distinta
-            a la posición del iterador*/
+            // Comprueba si existen coincidencias de una letra
+            } else if (lettersCoincidences.get(letter).size() > 0) {
+                boolean letterAlreadyInRightPos = finalText[i].contains(WordAnalyzer.ANSI_GREEN);
 
-            } else if (lettersCoincidences.get(letter).size() > 0 && lettersCoincidences.get(letter).get(0) != i) {
-                finalText[i] = WordAnalyzer.ANSI_YELLOW + letter;
-                lettersCoincidences.get(letter).remove(0);
+                // Verifica si ya se comprobó antes que la letra en la posición actual sea exacta a la original
+                if (!letterAlreadyInRightPos) {
+                    finalText[i] = WordAnalyzer.ANSI_YELLOW + letter;
+                    lettersCoincidences.get(letter).remove(0);                  
+                }
+
             }
         }
         
-        System.out.println(Utils.StrArraytoString(finalText));
+        System.out.println(Utils.StrArraytoString(finalText) + WordAnalyzer.ANSI_RESET);
     }
 }
