@@ -1,6 +1,6 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class WordAnalyzer {
 
@@ -29,15 +29,14 @@ public class WordAnalyzer {
         return false;
     }
 
-    // Devuelve todas las coincidencias de las letras en una colección de la forma llave:valor
+    // Devuelve todas las coincidencias de las letras en una colección de la forma letra:coincidencias
 
-    private static Map<Character, ArrayList<Integer>> getLettersCoincidences (String word) {
-        Map<Character, ArrayList<Integer>> lettersCoincidences = new HashMap<Character, ArrayList<Integer>>();
+    private static Map<Character, Integer> getLettersCoincidences (String word) {
+        Map<Character, Integer> lettersCoincidences = new HashMap<Character, Integer>();
 
         // Coloca todas las coincidencias de cada letra en una colección
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
-            ArrayList<Integer> coincidences = new ArrayList<Integer>();
 
             /* Si ya se hizo la comparación de una letra previa, esto impide que se compare la misma
             letra varias veces */
@@ -45,8 +44,7 @@ public class WordAnalyzer {
             if (!lettersCoincidences.containsKey(letter)) {
                 for (int j = 0; j < word.length(); j++) {
                     if (letter == word.charAt(j)){
-                        coincidences.add(j);
-                        lettersCoincidences.put(letter, coincidences);
+                        lettersCoincidences.put(letter, lettersCoincidences.getOrDefault(letter, 0) + 1);
                     }
                 }
             }
@@ -63,21 +61,21 @@ public class WordAnalyzer {
     */
 
     public static void showCurrentWordState (String word, String userWord) {
-        Map<Character, ArrayList<Integer>> lettersCoincidences = WordAnalyzer.getLettersCoincidences(word);
+        Map<Character, Integer> lettersCoincidences = WordAnalyzer.getLettersCoincidences(word);
 
         char[] userWordLetters = userWord.toCharArray();
         String[] finalText = new String[word.length()];
         
         // Compara las posiciones 1-1 de ambas palabras, y coloca en verde las que coincidan
         // Las que no, se dejan en su color original.
-        for (int j = 0; j < word.length(); j++) {
-            if (userWordLetters[j] == word.charAt(j)) {
-                finalText[j] = WordAnalyzer.ANSI_GREEN + userWordLetters[j];
+        for (int i = 0; i < userWordLetters.length; i++) {
+            if (userWordLetters[i] == word.charAt(i)) {
+                finalText[i] = WordAnalyzer.ANSI_GREEN + userWordLetters[i];
 
-                // Se remueve siempre el índice 0, ya que las coincidencias se encuentran de izquierda a derecha
-                lettersCoincidences.get(userWordLetters[j]).remove(0);
+                // Se disminuye la cantidad de coincidencias existentes
+                lettersCoincidences.put(userWordLetters[i], lettersCoincidences.get(userWordLetters[i]) - 1);
             } else {
-                finalText[j] = WordAnalyzer.ANSI_RESET + userWordLetters[j];
+                finalText[i] = WordAnalyzer.ANSI_RESET + userWordLetters[i];
             }
         }
 
@@ -91,13 +89,13 @@ public class WordAnalyzer {
                 finalText[i] = WordAnalyzer.ANSI_RESET + letter;
             
             // Comprueba si existen coincidencias de una letra
-            } else if (lettersCoincidences.get(letter).size() > 0) {
+            } else if (lettersCoincidences.get(letter) > 0) {
                 boolean letterAlreadyInRightPos = finalText[i].contains(WordAnalyzer.ANSI_GREEN);
 
                 // Verifica si ya se comprobó antes que la letra en la posición actual sea exacta a la original
                 if (!letterAlreadyInRightPos) {
                     finalText[i] = WordAnalyzer.ANSI_YELLOW + letter;
-                    lettersCoincidences.get(letter).remove(0);                  
+                    lettersCoincidences.put(userWordLetters[i], lettersCoincidences.get(userWordLetters[i]) - 1);                
                 }
 
             }
