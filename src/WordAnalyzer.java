@@ -1,6 +1,5 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class WordAnalyzer {
 
@@ -8,6 +7,7 @@ public class WordAnalyzer {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
+    public static String graphicTries = "";
 
     // Comprueba si las palabras son idénticas
 
@@ -54,7 +54,8 @@ public class WordAnalyzer {
 
     }
 
-    /* Imprime en pantalla el estado actual de la palabra ingresada por el usuario
+    /* 
+        Imprime en pantalla el estado actual de la palabra ingresada por el usuario
         - Letras amarillas: Posición incorrecta
         - Letras normales: No existe en la palabra
         - Letras verdes: Posición correcta exacta
@@ -100,7 +101,10 @@ public class WordAnalyzer {
 
             }
         }
+
+        WordAnalyzer.graphicTries += Utils.stringArraySeparator(finalText) + "\n";
+        System.out.print("\033[H\033[2J" + ANSI_RESET);
+        System.out.println(WordAnalyzer.graphicTries);
         
-        System.out.println(Utils.StrArraytoString(finalText) + WordAnalyzer.ANSI_RESET);
     }
 }
