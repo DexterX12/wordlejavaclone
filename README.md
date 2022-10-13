@@ -1,18 +1,12 @@
-## Getting Started
+## A WORDLE JAVA CLONE
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This is a **Wordle** clone made in** Java** for a college project. It requires no extra libs whatsoever. It has no GUI, so it only works on command line.
 
-## Folder Structure
+Its features are:
 
-The workspace contains two folders by default, where:
+- **Paints the letters depending on the status of the word the user entered.**
+- **It works for any word with any amount of letters**
+- **It reads words from a plain txt file, so you can add/remove words as you please.
+**
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+[![Working Example](https://i.imgur.com/XDnRoj4.gif "Working Example")](https://i.imgur.com/XDnRoj4.gif "Working Example")
