@@ -1,6 +1,6 @@
 ## A WORDLE JAVA CLONE
 
-This is a **Wordle** clone made in** Java** for a college project. It requires no extra libs whatsoever. It has no GUI, so it only works on command line.
+This is a **Wordle** clone made in **Java** for a college project. It requires no extra libs whatsoever. It has no GUI, so it only works on command line.
 
 Its features are:
 
